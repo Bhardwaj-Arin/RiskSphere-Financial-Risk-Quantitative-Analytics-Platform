@@ -1,220 +1,142 @@
 # RiskSphere
 
-## Financial Risk & Quantitative Analytics Platform
+### Financial Risk & Quantitative Analytics Platform
 
-RiskSphere is an educational, industry-style financial risk analytics platform designed to demonstrate an end-to-end quantitative risk workflow.
+<p align="center">
 
-The platform extends the original RiskForge-QRM market-risk prototype into a broader risk analytics system covering **market risk, credit risk, stress testing, reverse stress testing, portfolio risk attribution, model validation, risk limits, SQL persistence, monitoring, and decision-oriented reporting through Streamlit**.
+<a href="https://risksphere-financial-risk-quantitative-analytics-platform-ku22.streamlit.app/">
+  <img src="https://img.shields.io/badge/Live%20Demo-Streamlit-red?logo=streamlit" alt="Live Demo">
+</a>
 
-> **Scope & Disclaimer:** RiskSphere is an educational and portfolio project. It is not a production banking risk engine, regulatory capital calculator, Basel/CCAR/OCC/PRA-approved system, or IFRS 9/CECL implementation. Results are dependent on the underlying data, modelling assumptions, configuration, and methodology.
+<a href="https://github.com/Bhardwaj-Arin/RiskSphere-Financial-Risk-Quantitative-Analytics-Platform">
+  <img src="https://img.shields.io/badge/GitHub-Repository-black?logo=github" alt="GitHub">
+</a>
 
----
+<img src="https://img.shields.io/badge/Python-3.11+-blue?logo=python" alt="Python">
 
-## Key Capabilities
+<img src="https://img.shields.io/badge/Tests-49%20Passing-success?logo=pytest" alt="Tests">
 
-### Market Risk
+<img src="https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?logo=streamlit" alt="Streamlit">
 
-- Source-driven market data pipeline supporting:
-  - Deterministic synthetic data
-  - CSV-based data
-  - `yfinance` market data
-- Explicit factor mapping for:
-  - Equity
-  - 10Y interest rates
-  - USD FX
-  - Oil
-  - Gold
-- Duration/convexity approximation for the interest-rate factor
-- DV01 reporting
-- One-day, 99% out-of-sample VaR using:
-  - Historical Simulation
-  - Normal Parametric VaR
-  - EWMA
-  - GARCH(1,1) challenger
-- Expected Shortfall (ES) for every market-risk model
-- Standardized market-risk result contract containing:
-  - Model
-  - Confidence level
-  - Horizon
-  - VaR
-  - Expected Shortfall
-  - Forecast date
-  - Realized return
-  - Exception flag
-  - Training window
-  - Data version
+<img src="https://img.shields.io/badge/License-MIT-green" alt="License">
 
-### Backtesting & Model Validation
+</p>
 
-- Out-of-sample VaR backtesting
-- Kupiec unconditional coverage test
-- Christoffersen independence test
-- Model comparison across competing VaR methodologies
-- Period stability analysis
-- PSI-based distribution drift monitoring
-- Calibration and segment-level credit model evaluation
-- Structured validation findings with severity, evidence, recommendation, and status
-
-### Stress & Scenario Analysis
-
-- Configurable market stress scenarios
-- Sensitivity analysis
-- Reverse stress testing
-- Factor-level risk attribution
-- Portfolio-level stress loss analysis
-- Credit stress scenarios across baseline, moderate, and severe conditions
-
-### Credit Risk
-
-- Deterministic synthetic credit-data workflow
-- CSV-based credit-data workflow
-- Optional OpenML credit-data mode
-- Data-quality and leakage checks
-- Logistic Regression PD baseline
-- XGBoost PD challenger
-- Model evaluation using:
-  - ROC-AUC
-  - KS statistic
-  - Brier score
-  - Calibration
-  - Segment performance
-- Transparent LGD and EAD assumptions
-- Expected Loss calculation:
-
-$$
-\text{Expected Loss} = PD \times LGD \times EAD
-$$
-
-- Credit Expected Loss stress testing
-
-### Risk Governance
-
-- Model inventory
-- Model version and methodology tracking
-- Period stability monitoring
-- PSI drift monitoring
-- Risk limits
-- Limit utilization
-- Breach detection
-- Validation warnings and findings
-
-### Data & Database Layer
-
-- SQLAlchemy-based persistence layer
-- PostgreSQL deployment path
-- SQLite fallback for offline development and CI
-- Python ↔ SQL reconciliation checks
-- Data provenance metadata including:
-  - Data source
-  - Retrieval timestamp
-  - Factor metadata
-  - Row count
-  - Date range
-  - Deterministic data-version hash
-
-### Interactive Risk Workbench
-
-The Streamlit application provides dedicated pages for:
-
-1. Executive Overview
-2. Market Risk
-3. Backtesting
-4. Stress Testing
-5. Reverse Stress Testing
-6. Risk Attribution
-7. Credit Risk
-8. Model Validation
-9. Risk Limits
-10. Methodology
+<p align="center">
+  <b>An end-to-end quantitative risk analytics platform for market risk, credit risk, stress testing, model validation, portfolio attribution, risk limits, and financial risk reporting.</b>
+</p>
 
 ---
 
-# Current Validated Offline Run
+## 🚀 Live Demo
 
-The repository defaults to **deterministic synthetic market and credit data**, allowing the complete workflow to run without internet access.
+### Try RiskSphere Online
 
-The following results are therefore **demonstration outputs rather than real-market or real-loan findings**.
+👉 **[Launch the RiskSphere Dashboard](https://risksphere-financial-risk-quantitative-analytics-platform-ku22.streamlit.app/)**
 
-## Market VaR Backtesting
+No installation is required to explore the dashboard.
 
-| Model | Exceptions | Exception Rate | Kupiec p-value | Christoffersen p-value | Result |
-|---|---:|---:|---:|---:|---|
-| Historical VaR | 32 / 2358 | 1.357% | 0.0984 | 0.0766 | Pass |
-| Parametric VaR | 34 / 2358 | 1.442% | 0.0431 | 0.0977 | Coverage finding |
-| EWMA VaR | 34 / 2358 | 1.442% | 0.0431 | 0.0977 | Coverage finding |
-| GARCH VaR | 22 / 2358 | 0.933% | 0.7408 | 0.5197 | Pass |
+### Source Code
 
-The results differ from the original RiskForge-QRM baseline because RiskSphere activates the updated duration/convexity mapping for the 10-year rate factor.
-
-The historical model retains 32 exceptions, while the Parametric and EWMA results change. This is an intentional modelling change rather than an undocumented baseline drift.
-
-> **Important:** GARCH passing the two statistical tests in this synthetic demonstration does **not** establish that GARCH is universally superior to EWMA or Parametric VaR.
+👉 **[View the RiskSphere GitHub Repository](https://github.com/Bhardwaj-Arin/RiskSphere-Financial-Risk-Quantitative-Analytics-Platform)**
 
 ---
 
-## Credit Risk Demonstration
+# 📌 What is RiskSphere?
 
-The default synthetic credit workflow produces an observed holdout default rate of approximately **12.7%**.
+RiskSphere is an educational, industry-style financial risk analytics platform built to demonstrate how a quantitative risk workflow can move from:
 
-Logistic Regression and XGBoost are evaluated side-by-side using multiple performance and calibration metrics. The challenger model is **not automatically declared the winner** solely because it is more complex.
+**Data → Risk Models → Validation → Stress Testing → Governance → Reporting**
 
-The configured credit Expected Loss limit is intentionally evaluated by the governance layer. The current synthetic run produces a limit breach, which is surfaced by the system rather than suppressed.
+Instead of implementing only one risk model, the project brings multiple components of a simplified financial risk workflow together in a single platform.
 
-This demonstrates an important risk-management principle:
+It covers:
 
-> A risk analytics system should expose adverse findings rather than optimize its output to make the model or portfolio appear healthier.
+- Market Risk
+- Value at Risk (VaR)
+- Expected Shortfall (ES)
+- VaR Backtesting
+- GARCH Volatility Modelling
+- Interest-Rate Risk & DV01
+- Stress Testing
+- Reverse Stress Testing
+- Portfolio Risk Attribution
+- Credit Risk
+- Probability of Default (PD)
+- LGD / EAD
+- Expected Loss
+- Model Validation
+- Model Drift Monitoring
+- Risk Limits
+- SQL Persistence
+- Interactive Streamlit Reporting
+
+> **Project scope:** RiskSphere is an educational and portfolio project. It is not a production banking risk engine, regulatory capital calculator, or regulatory-approved risk management system.
 
 ---
 
-# Architecture
+# 🎯 Why was this project built?
+
+Financial institutions need to answer questions such as:
+
+> **How much could a portfolio lose?**
+
+> **How reliable is the risk model?**
+
+> **What happens under a stressed market environment?**
+
+> **Which risk factors contribute most to portfolio risk?**
+
+> **How much credit loss should we expect?**
+
+> **Has model behaviour changed over time?**
+
+> **Are risk limits being breached?**
+
+RiskSphere attempts to demonstrate these questions through a reproducible quantitative workflow rather than treating risk modelling as an isolated machine-learning problem.
+
+---
+
+# 🧩 How RiskSphere Works
+
+At a high level, the platform follows this workflow:
 
 ```text
-                    ┌──────────────────────────┐
-                    │       Data Sources       │
-                    │                          │
-                    │ Synthetic / CSV /        │
-                    │ yfinance / OpenML        │
-                    └────────────┬─────────────┘
-                                 │
-                                 ▼
-                    ┌──────────────────────────┐
-                    │   Data Ingestion & DQ    │
-                    │                          │
-                    │ Cleaning / Validation /  │
-                    │ Provenance / Versioning   │
-                    └────────────┬─────────────┘
-                                 │
-              ┌──────────────────┴──────────────────┐
-              │                                     │
-              ▼                                     ▼
-   ┌──────────────────────┐              ┌──────────────────────┐
-   │     Market Risk      │              │     Credit Risk      │
-   │                      │              │                      │
-   │ VaR / ES / GARCH     │              │ PD / LGD / EAD / EL  │
-   │ Rates / DV01         │              │ Model Validation     │
-   └──────────┬───────────┘              └──────────┬───────────┘
-              │                                     │
-              └──────────────────┬──────────────────┘
-                                 ▼
-                    ┌──────────────────────────┐
-                    │ Stress & Scenario Engine │
-                    │                          │
-                    │ Stress / Reverse Stress │
-                    │ Attribution              │
-                    └────────────┬─────────────┘
-                                 │
-                                 ▼
-                    ┌──────────────────────────┐
-                    │ Validation & Governance  │
-                    │                          │
-                    │ Backtesting / Drift      │
-                    │ Limits / Findings        │
-                    └────────────┬─────────────┘
-                                 │
-                    ┌────────────┴────────────┐
-                    ▼                         ▼
-          ┌──────────────────┐       ┌──────────────────┐
-          │ SQL Persistence  │       │ Streamlit        │
-          │                  │       │ Risk Workbench   │
-          │ SQLite/Postgres  │       │                  │
-          └──────────────────┘       └──────────────────┘
+                     DATA SOURCES
+                          │
+             ┌────────────┼────────────┐
+             │            │            │
+             ▼            ▼            ▼
+         Synthetic       CSV        yfinance
+             │
+             └────────────┬────────────┘
+                          ▼
+                 DATA INGESTION
+                          │
+                          ▼
+              DATA QUALITY & PROVENANCE
+                          │
+             ┌────────────┴────────────┐
+             │                         │
+             ▼                         ▼
+       MARKET RISK                CREDIT RISK
+             │                         │
+       ┌─────┼─────┐             ┌─────┼─────┐
+       │     │     │             │     │     │
+      VaR    ES   GARCH          PD   LGD   EAD
+       │     │     │              │     │     │
+       └─────┼─────┘              └─────┼─────┘
+             │                          │
+             └────────────┬─────────────┘
+                          ▼
+                STRESS & SCENARIO ANALYSIS
+                          │
+                          ▼
+                MODEL VALIDATION & MONITORING
+                          │
+                          ▼
+                  RISK GOVERNANCE
+                          │
+             ┌────────────┴────────────┐
+             ▼                         ▼
+       SQL PERSISTENCE          STREAMLIT DASHBOARD
