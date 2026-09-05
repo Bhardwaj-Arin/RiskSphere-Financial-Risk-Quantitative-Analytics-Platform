@@ -1,0 +1,7 @@
+{
+  "executed_at": "2026-09-05T10:15:09.732331Z",
+  "git_commit": "no-git-repo",
+  "model_version": "2.0.0",
+  "data_period": "2015-01-01 to 2024-12-31",
+  "data_source": "synthetic"
+}

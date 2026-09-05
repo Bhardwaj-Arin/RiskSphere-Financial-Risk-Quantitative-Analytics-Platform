@@ -1,0 +1,118 @@
+{
+  "project": "RiskQuant \u2014 Financial Risk & Quantitative Analytics Platform",
+  "data": {
+    "source": "synthetic",
+    "data_version": "e67c9d9daacd0157",
+    "rows": 13045
+  },
+  "market_latest": [
+    {
+      "model": "ewma_var",
+      "VaR": 0.015140545736946212,
+      "ES": 0.01730637513374289,
+      "exception": false
+    },
+    {
+      "model": "garch_var",
+      "VaR": 0.022811757907246277,
+      "ES": 0.026095010742251457,
+      "exception": false
+    },
+    {
+      "model": "historical_var",
+      "VaR": 0.015458138766953938,
+      "ES": 0.022459770920652822,
+      "exception": false
+    },
+    {
+      "model": "parametric_var",
+      "VaR": 0.0145884051961529,
+      "ES": 0.01667380730613091,
+      "exception": false
+    }
+  ],
+  "backtesting": [
+    {
+      "model_id": "ewma_var",
+      "n_forecasts": 2358,
+      "n_exceptions": 34,
+      "exception_rate": 0.01441899915182358,
+      "target_rate": 0.010000000000000009,
+      "avg_exceedance_size": 0.004121352106339702,
+      "avg_var": 0.013576464198261926
+    },
+    {
+      "model_id": "garch_var",
+      "n_forecasts": 2358,
+      "n_exceptions": 22,
+      "exception_rate": 0.009329940627650551,
+      "target_rate": 0.010000000000000009,
+      "avg_exceedance_size": 0.00364765269894793,
+      "avg_var": 0.01514672118304657
+    },
+    {
+      "model_id": "historical_var",
+      "n_forecasts": 2358,
+      "n_exceptions": 32,
+      "exception_rate": 0.013570822731128074,
+      "target_rate": 0.010000000000000009,
+      "avg_exceedance_size": 0.00399987037052055,
+      "avg_var": 0.014737935747785123
+    },
+    {
+      "model_id": "parametric_var",
+      "n_forecasts": 2358,
+      "n_exceptions": 34,
+      "exception_rate": 0.01441899915182358,
+      "target_rate": 0.010000000000000009,
+      "avg_exceedance_size": 0.003997675646279765,
+      "avg_var": 0.014064534249475808
+    }
+  ],
+  "reverse_stress": {
+    "resulting_loss": 0.09999999999491965,
+    "verified": true
+  },
+  "credit": {
+    "source": "synthetic",
+    "portfolio_model": "xgboost_pd",
+    "expected_loss_rate": 0.0723714586657459
+  },
+  "limits": [
+    {
+      "metric": "var_99",
+      "value": 0.022811757907246277,
+      "limit": 0.04,
+      "utilization": 0.5702939476811569,
+      "status": "OK"
+    },
+    {
+      "metric": "es_99",
+      "value": 0.026095010742251457,
+      "limit": 0.06,
+      "utilization": 0.434916845704191,
+      "status": "OK"
+    },
+    {
+      "metric": "stress_loss",
+      "value": 0.08995,
+      "limit": 0.2,
+      "utilization": 0.44975,
+      "status": "OK"
+    },
+    {
+      "metric": "credit_expected_loss",
+      "value": 0.0723714586657459,
+      "limit": 0.04,
+      "utilization": 1.8092864666436475,
+      "status": "BREACH"
+    }
+  ],
+  "database": {
+    "enabled": true,
+    "backend": "sqlite",
+    "run_id": "rq_20260905T101526_d61bbcb9",
+    "url_mode": "offline_fallback"
+  },
+  "reconciliation_pass": true
+}

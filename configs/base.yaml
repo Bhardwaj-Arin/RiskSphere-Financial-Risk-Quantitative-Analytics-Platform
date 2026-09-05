@@ -1,0 +1,107 @@
+project:
+  name: RiskQuant
+  title: "RiskQuant — Financial Risk & Quantitative Analytics Platform"
+  scope_statement: >
+    Educational, industry-style quantitative risk analytics portfolio project.
+    Not a production bank risk engine, regulatory capital calculator, or claim
+    of Basel/CCAR/OCC/PRA/IFRS 9/CECL compliance.
+
+data:
+  source: synthetic           # synthetic | csv | yfinance
+  start_date: "2015-01-01"
+  end_date: "2024-12-31"
+  risk_factors: [EQUITY_INDEX, RATES_10Y, FX_USD, OIL, GOLD]
+  seed: 42
+  csv_path: null
+  tickers:
+    EQUITY_INDEX: "^GSPC"
+    RATES_10Y: "^TNX"
+    FX_USD: "DX-Y.NYB"
+    OIL: "CL=F"
+    GOLD: "GC=F"
+  factor_metadata:
+    EQUITY_INDEX: {type: price_return, description: "Broad equity index proxy"}
+    RATES_10Y: {type: yield_change, description: "10-year yield proxy; absolute yield change"}
+    FX_USD: {type: price_return, description: "US dollar index proxy"}
+    OIL: {type: price_return, description: "Crude oil proxy"}
+    GOLD: {type: price_return, description: "Gold proxy"}
+
+portfolio:
+  id: demo_portfolio
+  notional: 1000000.0
+  weights:
+    EQUITY_INDEX: 0.45
+    RATES_10Y: 0.20
+    FX_USD: 0.15
+    OIL: 0.10
+    GOLD: 0.10
+  mapping:
+    apply_rate_duration: true
+    rate_factor: RATES_10Y
+    duration_years: 7.0
+    convexity: 55.0
+
+risk:
+  confidence: 0.99
+  horizon_days: 1
+  training_window: 250
+
+ewma:
+  lambda: 0.94
+
+garch:
+  enabled: true
+  refit_interval: 0          # 0 = fit once on initial training window, then recurse OOS
+  distribution: normal
+
+backtest:
+  significance_level: 0.05
+
+stress:
+  target_loss: 0.10
+  bounds:
+    EQUITY_INDEX: [-0.30, 0.0]
+    RATES_10Y: [0.0, 0.03]
+    FX_USD: [-0.15, 0.15]
+    OIL: [-0.25, 0.25]
+    GOLD: [-0.25, 0.25]
+
+limits:
+  enabled: true
+  var_99: 0.040
+  es_99: 0.060
+  stress_loss: 0.200
+  credit_expected_loss: 0.040
+
+credit:
+  enabled: true
+  source: synthetic          # synthetic | csv | openml_credit_g
+  csv_path: null
+  seed: 123
+  n_samples: 4000
+  test_fraction: 0.25
+  lgd_baseline: 0.45
+  ead_column: ead
+  target_column: default_flag
+  observation_date_column: observation_date
+  challenger: xgboost
+
+credit_stress:
+  scenarios:
+    - {id: BASELINE, pd_multiplier: 1.0, lgd_shift: 0.00}
+    - {id: MODERATE, pd_multiplier: 1.35, lgd_shift: 0.05}
+    - {id: SEVERE, pd_multiplier: 1.80, lgd_shift: 0.10}
+
+monitoring:
+  psi_bins: 10
+  warning_threshold: 0.10
+  breach_threshold: 0.25
+
+database:
+  enabled: true
+  # If RISKQUANT_DATABASE_URL is set it is used. Otherwise a local SQLite
+  # demo database is created under artifacts/. PostgreSQL is the intended
+  # interview/portfolio deployment target.
+  fallback_url: "sqlite:///artifacts/riskquant.db"
+
+model_version: "2.0.0"

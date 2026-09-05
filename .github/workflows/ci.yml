@@ -1,0 +1,25 @@
+name: RiskQuant CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Unit and integration tests
+        run: pytest -q
+      - name: Pipeline smoke run
+        run: |
+          python scripts/run_pipeline.py
+          python scripts/smoke_test.py
+      - name: Syntax-check Streamlit workbench
+        run: python -m py_compile app/app.py dashboard/app.py

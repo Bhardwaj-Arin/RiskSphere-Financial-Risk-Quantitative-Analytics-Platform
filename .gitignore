@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.pytest_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Raw/interim data is generated or locally sourced.
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Local demo database and run artifacts.
+artifacts/*.db
+artifacts/*.sqlite
+
+# OS/editor noise.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

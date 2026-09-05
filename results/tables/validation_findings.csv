@@ -1,0 +1,5 @@
+finding_id,severity,evidence,recommendation,status
+MARKET_BACKTEST_ewma_var,MEDIUM,"Backtest did not pass both 5% tests; Kupiec p=0.04309, Christoffersen p=0.09773",Review coverage and volatility assumptions; do not infer model validity from one test.,OPEN
+MARKET_BACKTEST_parametric_var,MEDIUM,"Backtest did not pass both 5% tests; Kupiec p=0.04309, Christoffersen p=0.09773",Review coverage and volatility assumptions; do not infer model validity from one test.,OPEN
+DRIFT_GOLD,LOW,PSI=0.1542 (WARNING),Investigate input distribution shift before relying on model output.,OPEN
+LIMIT_credit_expected_loss,HIGH,credit_expected_loss utilization=180.9%,Escalate the risk-limit breach and review exposure/scenario assumptions.,OPEN

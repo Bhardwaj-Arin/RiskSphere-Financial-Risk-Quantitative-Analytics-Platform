@@ -1,0 +1,6 @@
+check,passed,detail
+target_present,True,default_flag
+ead_present,True,ead
+binary_target,True,target must be 0/1
+target_missing,True,missing=0
+ead_nonnegative,True,missing_or_non_numeric=0

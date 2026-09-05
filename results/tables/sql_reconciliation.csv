@@ -1,0 +1,5 @@
+check,python_value,sql_value,absolute_difference,passed
+risk_row_count,9432.0,9432.0,0.0,True
+risk_var_sum,135.6454953826667,135.6454953826667,0.0,True
+stress_row_count,20.0,20.0,0.0,True
+stress_loss_sum,0.9173750000000002,0.9173750000000002,0.0,True

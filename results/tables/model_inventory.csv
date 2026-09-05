@@ -1,0 +1,7 @@
+model_id,purpose,target,data,training_period,features,assumptions,limitations,version,validation_status
+historical_var,Market VaR,1-day portfolio loss quantile,synthetic,2015-01-01 to 2024-12-31,portfolio returns,empirical rolling distribution,historical window may not represent future tail,2.0.0,VALIDATED
+parametric_var,Market VaR,1-day portfolio loss quantile,synthetic,2015-01-01 to 2024-12-31,portfolio returns,conditional normality in rolling window,normal tails can understate extreme loss,2.0.0,VALIDATED
+ewma_var,Market VaR,1-day portfolio loss quantile,synthetic,2015-01-01 to 2024-12-31,portfolio returns,EWMA volatility; normal tail,fixed decay factor; normal tail,2.0.0,VALIDATED
+garch_var,Market VaR challenger,1-day portfolio loss quantile,synthetic,2015-01-01 to 2024-12-31,portfolio returns,"GARCH(1,1); Gaussian QMLE",initial-window parameter fit; normal conditional tail,2.0.0,CHALLENGER
+logistic_pd,Credit PD baseline,default probability,synthetic,dataset split recorded in credit validation outputs,credit application/risk features,log-odds linear after preprocessing,educational dataset; simplified target definition,2.0.0,VALIDATED
+xgboost_pd,Credit PD challenger,default probability,synthetic,dataset split recorded in credit validation outputs,credit application/risk features,gradient-boosted trees,less interpretable; educational dataset,2.0.0,CHALLENGER

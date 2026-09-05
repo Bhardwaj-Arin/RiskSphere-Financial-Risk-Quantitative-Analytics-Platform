@@ -1,0 +1,38 @@
+{
+  "source": "synthetic",
+  "retrieved_at": "2026-09-05T10:15:10.036039+00:00",
+  "start_date": "2015-01-01",
+  "end_date": "2024-12-31",
+  "row_count": 13045,
+  "risk_factors": [
+    "EQUITY_INDEX",
+    "FX_USD",
+    "GOLD",
+    "OIL",
+    "RATES_10Y"
+  ],
+  "data_version": "e67c9d9daacd0157",
+  "factor_metadata": {
+    "EQUITY_INDEX": {
+      "type": "price_return",
+      "description": "Broad equity index proxy"
+    },
+    "RATES_10Y": {
+      "type": "yield_change",
+      "description": "10-year yield proxy; absolute yield change"
+    },
+    "FX_USD": {
+      "type": "price_return",
+      "description": "US dollar index proxy"
+    },
+    "OIL": {
+      "type": "price_return",
+      "description": "Crude oil proxy"
+    },
+    "GOLD": {
+      "type": "price_return",
+      "description": "Gold proxy"
+    }
+  },
+  "raw_path": "data\\raw\\market_prices_20260905T101510Z.csv"
+}
