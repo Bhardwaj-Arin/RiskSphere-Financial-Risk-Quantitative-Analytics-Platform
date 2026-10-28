@@ -1070,7 +1070,7 @@ def page_about(d: dict, cfg: dict) -> None:
         callout("Scope", "RiskSphere is an <b>educational, industry-style</b> portfolio project. It is <b>not</b> a production bank engine, "
                 "a regulatory-capital calculator, or a claim of Basel / IFRS 9 / CECL compliance.", "warn")
     with c2:
-
+        st.link_button("⭐ GitHub repository", GITHUB)
         st.link_button("🚀 Live app", LIVE)
 
     section("🧰 Tech stack")
