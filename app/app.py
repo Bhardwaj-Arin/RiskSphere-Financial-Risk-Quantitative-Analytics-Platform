@@ -162,8 +162,8 @@ def header(icon: str, title: str, tagline: str) -> None:
 
 def style_fig(fig: go.Figure, height: int = 420, legend: bool = True) -> go.Figure:
     fig.update_layout(
-        height=height, margin=dict(l=10, r=10, t=55, b=10), showlegend=legend,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        height=height, margin=dict(l=10, r=10, t=90, b=10), showlegend=legend,
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0),
     )
     return fig
 
@@ -1070,7 +1070,7 @@ def page_about(d: dict, cfg: dict) -> None:
         callout("Scope", "RiskSphere is an <b>educational, industry-style</b> portfolio project. It is <b>not</b> a production bank engine, "
                 "a regulatory-capital calculator, or a claim of Basel / IFRS 9 / CECL compliance.", "warn")
     with c2:
-        st.link_button("⭐ GitHub repository", GITHUB)
+
         st.link_button("🚀 Live app", LIVE)
 
     section("🧰 Tech stack")
@@ -1162,7 +1162,6 @@ def main() -> None:
         st.radio("Navigate", list(PAGES), key="nav", label_visibility="collapsed")
         st.divider()
         st.caption("📌 New here? Start with **🏠 Start Here** - it explains everything in 2 minutes.")
-        st.link_button("⭐ GitHub", GITHUB)
         st.caption("Educational portfolio project · synthetic data · not regulatory software.")
 
     if all(df.empty for df in d.values()):
