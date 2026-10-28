@@ -10,9 +10,14 @@
 [![CI](https://github.com/Bhardwaj-Arin/RiskSphere-Financial-Risk-Quantitative-Analytics-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Bhardwaj-Arin/RiskSphere-Financial-Risk-Quantitative-Analytics-Platform/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-green)](#license)
 
-**An end-to-end quantitative risk analytics platform covering market risk, credit risk, stress testing, model validation, portfolio attribution, risk limits, SQL persistence, and a 10-page interactive risk workbench.**
+**An end-to-end quantitative risk analytics platform covering market risk, credit risk, stress testing, model validation, portfolio attribution, risk limits, SQL persistence, and an interactive 8-page storytelling dashboard.**
 
 👉 **[Launch the Live Dashboard](https://risksphere-financial-risk-quantitative-analytics-platform-ku22.streamlit.app/)** &nbsp;|&nbsp; 📄 **[Read the Full Project Report (PDF)](RiskForge-QRM_Project_Report.pdf)**
+
+<!-- After you add screenshots to docs/screenshots/, remove the comment markers around the image lines below -->
+<!--
+![RiskSphere dashboard home](docs/screenshots/home.png)
+-->
 
 ---
 
@@ -20,20 +25,21 @@
 
 1. [Overview](#overview)
 2. [Why This Project Exists](#why-this-project-exists)
-3. [Key Features](#key-features)
-4. [System Architecture](#system-architecture)
-5. [Tech Stack](#tech-stack)
-6. [Project Structure](#project-structure)
-7. [Methodology](#methodology)
-8. [Getting Started](#getting-started)
-9. [Configuration](#configuration)
-10. [Dashboard Walkthrough](#dashboard-walkthrough)
-11. [Testing & CI](#testing--ci)
-12. [Sample Outputs](#sample-outputs)
-13. [Limitations & Scope](#limitations--scope)
-14. [Roadmap](#roadmap)
-15. [Author](#author)
-16. [License](#license)
+3. [Key Results at a Glance](#key-results-at-a-glance)
+4. [Key Features](#key-features)
+5. [System Architecture](#system-architecture)
+6. [Tech Stack](#tech-stack)
+7. [Project Structure](#project-structure)
+8. [Methodology](#methodology)
+9. [Getting Started](#getting-started)
+10. [Configuration](#configuration)
+11. [Dashboard Walkthrough](#dashboard-walkthrough)
+12. [Testing & CI](#testing--ci)
+13. [Sample Outputs](#sample-outputs)
+14. [Limitations & Scope](#limitations--scope)
+15. [Roadmap](#roadmap)
+16. [Author](#author)
+17. [License](#license)
 
 ---
 
@@ -43,7 +49,7 @@ RiskSphere is an **educational, industry-style financial risk analytics platform
 
 > **Data → Risk Models → Validation → Stress Testing → Governance → Reporting**
 
-Rather than implementing a single risk model in isolation, RiskSphere wires together the pieces a bank's market-risk and credit-risk desks actually rely on — VaR/ES engines, backtesting, GARCH volatility modelling, credit scoring, stress testing, model governance, SQL persistence, and a decision-oriented dashboard — into one coherent, configuration-driven, tested codebase.
+Rather than implementing a single risk model in isolation, RiskSphere wires together the pieces a bank's market-risk and credit-risk desks actually rely on — VaR/ES engines, backtesting, GARCH volatility modelling, credit scoring, stress testing, model governance, SQL persistence, and an interactive dashboard — into one coherent, configuration-driven, tested codebase.
 
 > **Scope statement:** RiskSphere is a portfolio/learning project. It is **not** a production banking risk engine, a regulatory capital calculator, or a Basel/CCAR/OCC/PRA/IFRS 9/CECL-compliant system. See [Limitations & Scope](#limitations--scope).
 
@@ -59,6 +65,22 @@ Risk functions at financial institutions are ultimately trying to answer a small
 - Are we inside our risk limits, and can we prove it?
 
 RiskSphere was built to demonstrate a **reproducible, auditable workflow** that answers these questions — instead of treating "risk modelling" as a single isolated ML task with one metric and no governance around it.
+
+## Key Results at a Glance
+
+All results below come from the reproducible synthetic dataset (fixed seed), a 5-factor portfolio of 1,000,000 notional, and a 99% / 1-day risk setting. Re-run `python scripts/run_pipeline.py` to regenerate them.
+
+| Area | Result |
+|---|---|
+| **Market risk (VaR)** | Latest 1-day 99% VaR ranges from 1.46% to 2.28% of the portfolio depending on the model (GARCH is the most cautious at about 22,800 per 1,000,000) |
+| **Backtesting** | GARCH(1,1) breached its VaR on 0.93% of 2,358 out-of-sample days (target 1%) and passed both the Kupiec and Christoffersen tests. Parametric and EWMA breached on 1.44% of days and **failed** the Kupiec test (they assume a bell curve and understate crashes) |
+| **Risk attribution** | The equity index is 45% of the money but about 70% of portfolio variance. Gold has a slightly negative contribution, so it acts as a natural hedge |
+| **Stress testing** | The worst configured scenario (2008-style equity crash) costs about 9.0% of the portfolio, roughly 3.9× the normal-day VaR |
+| **Reverse stress** | The minimum-size shock that loses 10% was found from 6 different starting points and converged to the same answer each time |
+| **Credit risk** | Expected loss is about 1.50M on 20.75M lent (7.2%). A severe recession scenario raises it by about 118% |
+| **PD models** | Logistic Regression ranks borrowers slightly better (AUC 0.755 vs 0.730), but XGBoost gives far better-calibrated probabilities (Brier 0.101 vs 0.203), so XGBoost feeds the Expected Loss calculation |
+| **Governance** | The credit expected-loss limit is breached at 181% utilisation. The system raises it automatically as a HIGH finding. The GOLD input also triggers a PSI drift warning (0.154) |
+| **Engineering** | 49 automated tests, GitHub Actions CI, SQL persistence, and Python ↔ SQL reconciliation with zero differences |
 
 ## Key Features
 
@@ -93,8 +115,10 @@ RiskSphere was built to demonstrate a **reproducible, auditable workflow** that 
 - SQLAlchemy persistence layer (SQLite offline demo, PostgreSQL production-style mode)
 - Automated Python ↔ SQL reconciliation
 
-**Reporting**
-- 10-page interactive Streamlit risk workbench
+**Reporting & Dashboard**
+- Interactive 8-page Streamlit dashboard that explains every concept in plain English and shows results as live Plotly charts
+- A "Build Your Own Crash" stress lab: drag sliders for each risk factor and watch the portfolio loss update instantly
+- Takeaways and headline numbers are generated from the result files, so they stay correct whenever the pipeline is re-run
 - Multiple data source modes: synthetic (deterministic, seeded), CSV, or live `yfinance` market data
 - Full data provenance and data-quality/leakage checks on every ingested dataset
 
@@ -170,21 +194,22 @@ VaR    ES   GARCH          PD   LGD   EAD
 
 ```text
 RiskSphere/
-├── app/                     # Streamlit workbench entry point (10-page app)
+├── app/                     # Streamlit dashboard (8-page storytelling app)
 ├── dashboard/               # Compatibility wrapper for `streamlit run dashboard/app.py`
+├── .streamlit/              # Dashboard theme (config.toml)
 ├── src/riskforge/           # Core Python package
 │   ├── data/                #   loading, synthetic generation, data-quality checks
-│   ├── models/               #   Historical / Parametric / EWMA VaR, Expected Shortfall
-│   ├── market_risk/          #   GARCH, rates/DV01, unified market-risk service
-│   ├── credit_risk/          #   PD/LGD/EAD models, features, stress, service layer
-│   ├── portfolio/            #   portfolio engine (factor → P&L mapping)
-│   ├── attribution/           #   risk attribution by factor / scenario
-│   ├── stress/               #   scenario shocks + reverse stress solver
-│   ├── validation/           #   backtesting (Kupiec/Christoffersen), drift, stability
-│   ├── governance/           #   model inventory, risk limits
-│   ├── database/             #   SQLAlchemy repository + reconciliation
-│   ├── reporting/            #   report generation
-│   └── utils/                #   config loader, logging, reproducibility (seeding)
+│   ├── models/              #   Historical / Parametric / EWMA VaR, Expected Shortfall
+│   ├── market_risk/         #   GARCH, rates/DV01, unified market-risk service
+│   ├── credit_risk/         #   PD/LGD/EAD models, features, stress, service layer
+│   ├── portfolio/           #   portfolio engine (factor → P&L mapping)
+│   ├── attribution/         #   risk attribution by factor / scenario
+│   ├── stress/              #   scenario shocks + reverse stress solver
+│   ├── validation/          #   backtesting (Kupiec/Christoffersen), drift, stability
+│   ├── governance/          #   model inventory, risk limits
+│   ├── database/            #   SQLAlchemy repository + reconciliation
+│   ├── reporting/           #   report generation
+│   └── utils/               #   config loader, logging, reproducibility (seeding)
 ├── configs/                 # base.yaml (all model/portfolio/limit parameters), stress_scenarios.yaml
 ├── sql/                     # schema.sql (PostgreSQL DDL), risk_queries.sql, data_quality.sql
 ├── scripts/                 # run_pipeline.py (end-to-end run), smoke_test.py
@@ -237,7 +262,7 @@ pip install -r requirements.txt
 pytest -q
 
 python scripts/run_pipeline.py   # runs the full pipeline against deterministic synthetic data
-streamlit run dashboard/app.py   # launches the 10-page workbench
+streamlit run dashboard/app.py   # launches the 8-page dashboard
 ```
 
 The offline demo uses deterministic, seeded synthetic market and credit data plus a local SQLite database — no external services or credentials required.
@@ -268,22 +293,24 @@ Everything about a run is controlled from [`configs/base.yaml`](configs/base.yam
 
 ## Dashboard Walkthrough
 
-The Streamlit workbench (`app/app.py`) has 10 pages, navigable from the sidebar:
+The dashboard (`app/app.py`) is built so a first-time visitor can understand the project in about two minutes. Every page explains the concept in plain English, shows the result as an interactive chart, and ends with a takeaway. The sidebar navigates between 8 pages:
 
-| Page | What it shows |
+| Page | What you see |
 |---|---|
-| Executive Overview | Portfolio-level VaR/ES snapshot and headline risk posture |
-| Market Risk | Latest VaR/ES across Historical, Parametric, EWMA and GARCH models |
-| Backtesting | Kupiec/Christoffersen exception analysis per model |
-| Stress Testing | Portfolio loss under each configured stress scenario |
-| Reverse Stress | The minimum-shock scenario that reaches a target loss |
-| Risk Attribution | Which factors/scenarios drive portfolio volatility |
-| Credit Risk | Expected Loss (PD × LGD × EAD), PD model validation, credit stress |
-| Model Validation | Model inventory, input drift (PSI), structured findings |
-| Risk Limits | Limit utilization and breach status |
-| Methodology | In-app explanation of the models and assumptions |
+| 🏠 Start Here | The 30-second story (problem, what was built, what was found), a pipeline diagram, 8 headline result cards, a portfolio chart and key findings |
+| 📉 Market Risk | VaR and Expected Shortfall in dollars for any portfolio size, a forecast-vs-actual chart with breaches marked, GARCH volatility, and all four models side by side |
+| ✅ Backtesting | A pass/fail report card per model (Kupiec and Christoffersen), breach counts vs. expected, p-value chart, and a year-by-year breach-rate heatmap |
+| 💥 Stress Testing | Scenario losses, a waterfall showing which asset caused the loss, the **Build Your Own Crash** slider lab, and a reverse stress test |
+| 🧩 Risk Attribution | Share of money invested vs. share of risk for each asset |
+| 🏦 Credit Risk | Expected Loss = PD × LGD × EAD with real numbers, loss by loan size, ROC curves, a calibration chart and a recession simulator |
+| 🛡️ Governance | Risk-limit gauges, validation findings, PSI drift monitoring, model inventory and Python ↔ SQL reconciliation |
+| 📖 About & Method | Tech stack, methodology with formulas, and honest limitations |
 
-The sidebar also surfaces Python ↔ SQL reconciliation status so results shown in the UI are traceable back to the persisted database records.
+<!-- After you add screenshots to docs/screenshots/, remove the comment markers around the image lines below -->
+<!--
+![Market risk page](docs/screenshots/market_risk.png)
+![Stress lab](docs/screenshots/stress_lab.png)
+-->
 
 ## Testing & CI
 
@@ -326,7 +353,7 @@ Documented in full in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) — stated up
 - Live PostgreSQL deployment validation (currently implemented and unit-tested against SQLite; see [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md))
 - Additional volatility models (EGARCH/GJR-GARCH) as further challengers
 - Expanded credit segment reporting and vintage analysis
-- Dashboard screenshots/GIFs embedded directly in this README (see `docs/screenshots/README.md` for the capture process)
+- Embedded dashboard screenshots/GIFs in this README (see `docs/screenshots/README.md` for the capture process)
 
 ## Author
 
